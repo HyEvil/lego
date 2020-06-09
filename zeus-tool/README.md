@@ -1,8 +1,8 @@
-## 个人框架zeus的工具链
+## 个人框架zeus的工具链(最近为了trade_bot造的轮子)
 
 ### 功能
 
-解析zeus协议并转换成proto，生成swagger，protobuf代码;
+解析zeus协议并转换成proto，生成protobuf代码，swagger，packr打包等
 
 生成service，dao，model等
 
