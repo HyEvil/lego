@@ -2,7 +2,7 @@
 
 ### 功能
 
-解析zeus协议并转换成proto，生成protobuf代码，swagger，packr打包等
+解析zeus协议并转换成proto，生成protobuf代码，swagger，router register,packr打包等
 
 生成service，dao，model等
 
