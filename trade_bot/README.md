@@ -1,4 +1,4 @@
-#### [https://trade.yym.plus/ ](https://trade.yym.plus/ "") 
+#### [https://trade.yym.plus/ ](https://trade.yym.plus/ "")   (ps:服务器在香港，打开慢点，见谅~)
 
 测试账户：test  密码：testtest
 
