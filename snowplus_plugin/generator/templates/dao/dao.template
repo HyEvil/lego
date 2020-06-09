@@ -1,0 +1,96 @@
+{{- /*gotype: yym/snowplus_cli/generator.DaoTemplateArgs*/ -}}
+package dao
+import (
+{{if ne .PB.Path ""}}
+    {{.PB.Alias}} "{{.PB.Path}}"
+{{end }}
+)
+
+const (
+{{.TableVar}}= "{{.Table}}"
+)
+
+type {{.Dao}} struct{}
+
+{{if .HasRetrieve}}
+func (d *{{.Dao}}) OneByID(id int64) (*model.{{.Model}}, error) {
+    m := model.{{.Model}}{}
+    ok, err := x.Table({{.TableVar}}).ID(id).Get(&m)
+    if !ok {
+    return nil, fmt.Errorf("not found")
+    }
+    return &m, err
+}
+
+func (d *{{.Dao}}) Exist(id int64) (bool, error) {
+return x.Table({{.TableVar}}).ID(id).Exist()
+}
+
+func (d *{{.Dao}}) List(id int64) (*{{.PB.Alias}}.{{.PB.DetailResponse}}, error) {
+m := model.{{.Model}}{}
+ok, err := x.Table({{.TableVar}}).ID(id).Get(&m)
+if !ok {
+return nil, fmt.Errorf("not found")
+}
+return &{{.PB.Alias}}.{{.PB.DetailResponse}}{
+{{ .PB.DetailAssignBlock }}}, err
+}
+
+{{if ne .PB.ListRequest ""}}
+
+{{end}}
+
+{{if ne .PB.DetailResponse ""}}
+func (d *{{.Dao}}) Detail(id int64) (*{{.PB.Alias}}.{{.PB.DetailResponse}}, error) {
+    m := model.{{.Model}}{}
+    ok, err := x.Table({{.TableVar}}).ID(id).Get(&m)
+    if !ok {
+    return nil, fmt.Errorf("not found")
+    }
+    return &{{.PB.Alias}}.{{.PB.DetailResponse}}{
+    {{ .PB.DetailAssignBlock }}}, err
+}
+{{end }}
+{{end}}
+
+{{if .HasCreate}}
+func (d *{{.Dao}}) Add(m *model.{{.Model}}) error {
+_, err := x.Table({{.TableVar}}).Insert(m)
+return err
+}
+{{ if ne .PB.CreateRequest ""}}
+func (d *{{.Dao}}) AddByRequest(req *{{.PB.Alias}}.{{.PB.CreateRequest}}) error {
+return d.Add(&model.{{.Model}} {
+{{ .PB.CreateAssignBlock }} })
+}
+{{end}}
+{{end}}
+
+{{ if .HasDelete }}
+func (d *{{.Dao}}) Delete(id int64) error {
+    affected, err := x.Table({{.TableVar}}).Delete(&model.{{.Model}}{ID: id})
+    if err!=nil{
+        return err
+    }
+    if affected==0{
+        return fmt.Errorf("not found")
+    }
+    return nil
+}
+{{end}}
+
+{{ if .HasUpdate }}
+func (d *{{.Dao}}) UpdateByID(id int64, m *model.{{.Model}}) error {
+_, err := x.Table({{.TableVar}}).ID(id).Update(m)
+return err
+}
+
+{{ if ne .PB.UpdateRequest ""}}
+func (d *{{.Dao}}) UpdateByRequest(id int64,req *{{.PB.Alias}}.{{.PB.UpdateRequest}}) error {
+return d.UpdateByID(id,&model.{{.Model}} {
+{{ .PB.UpdateAssignBlock }} })
+}
+
+{{end}}
+{{end}}
+
